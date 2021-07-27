@@ -46,6 +46,7 @@ io.on('connection', async socket => {
         /*let archivo = await fs.promises.readFile(rutaMensajes, "utf-8");
         let msg = JSON.parse(archivo,null,"\t")
         msg.push(data);
+        //comentario de commit
         await fs.promises.writeFile(rutaMensajes, JSON.stringify(msg))
         io.sockets.emit('messages', await leerMensajes())*/
     });
