@@ -1,0 +1,45 @@
+<style>
+    .table td, .table th {
+        vertical-align: middle;
+    }
+    hr {
+        background-color: #eee;
+    }
+    .jumbotron {
+        min-height: 100vh;
+        border-radius: 15px;
+    }
+    .tabla{
+      border-radius: 15px;
+      background-color: grey;
+    }
+    .table-dark{
+      background-color: grey !important;
+    }
+</style>
+
+<div class="container">
+  <div class="formulario">
+    <div class="jumbotron">
+      <h1>Vista de {{titulo}}</h1>
+      <br>
+
+      {{#if hayProductos}}
+          <div class="table-responsive tabla">
+              <table class="table table-dark">
+                  <tr> <th>Nombre</th> <th>Precio</th> <th>Foto</th></tr>
+                  {{#each productos}}
+                      <tr> <td>{{this.title}}</td> <td>${{this.price}}</td> <td><img width="50" src={{this.thumbnail}} alt="Imagen no encontada"></td> </tr>
+                  {{/each}}
+              </table>
+
+                  <a href="/"><button type="submit" class="btn">  Volver</button></a>
+
+          </div>
+      {{else}}
+          <h3 class="alert alert-warning">No se encontraron productos</h3>
+          <a href="/"><button type="submit" class="btn">  Volver</button></a>
+      {{/if}}
+    </div>
+  </div>
+</div>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Ingreso de Productos</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/estilos.css">
+    <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+
+</head>
+<body>
+
+    <div class="container mt-3">
+        <div class="jumbotron">
+            <h1>Ingrese Producto</h1>
+            <br>
+            <form autocomplete="off" id="form-productos">
+
+                <div class="form-group">
+                    <label for="nombre">Nombre</label>
+                    <input
+                    id="nombre"
+                    class="form-control"
+                    type="text"
+                    name="title"
+                     required>
+                </div>
+
+                <div class="form-group">
+                    <label for="precio">Precio</label>
+                    <input
+                    id="precio"
+                    class="form-control"
+                    type="number"
+                    step="0.5"
+                    name="price"
+                    required>
+                </div>
+
+                <div class="form-group">
+                    <label for="foto">Foto URL</label>
+                    <input
+                    id="foto"
+                    class="form-control"
+                    type="url"
+                    name="thumbnail">
+                </div>
+
+
+                <button class="btn btn-success mt-3">Enviar</button>
+
+            </form>
+            <hr>
+            <div id="datos"></div>
+            <form onsubmit="return addMessage(this)" id="chat">
+                <input type="text" id="email" class="form-control my-2 mr-2" placeholder="Tu Email">
+                <input type="text" id="persona" class="form-control my-2 mr-2" placeholder="Tu Nombre">
+                <input type="text" id="apellido" class="form-control my-2 mr-2" placeholder="Tu Apellido">
+                <input type="text" id="edad" class="form-control my-2 mr-2" placeholder="Tu Edad">
+                <input type="text" id="alias" class="form-control my-2 mr-2" placeholder="Tu Alias">
+                <input type="text" id="texto" class="form-control my-2 mr-2" placeholder="Cuéntanos algo...">
+                <input class="btn btn-primary my-2" type="submit" value="Enviar!" id="boton">
+            </form>
+            <div id="messages">aca van los mensajes</div>
+
+        </div>
+    </div>
+
+    <script src="js/handlebars-v4.7.6.js"></script>
+    <script src="js/main.js"></script>
+
+</body>
+</html>
