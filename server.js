@@ -23,32 +23,45 @@ app.engine(
 
 app.set("view engine", "hbs");
 app.set("views", __dirname + '/views');
-
-
+const schemaAuthor = new schema.Entity('author',{},{idAttribute: 'email'});
+const schemaMensaje = new schema.Entity('post', {
+    author: schemaAuthor
+},{idAttribute: '_id'})
+const schemaMensajes = new schema.Entity('posts', {
+    mensajes: [schemaMensaje]
+  },{idAttribute: 'id'})
+async function getAll() {
+    try {
+        let mensajes = await ApiMensajes.findAll()
+        //print(mensajes)
+        let mensajesConId = { 
+            id: 'mensajes', 
+            mensajes : mensajes.map( mensaje => ({...mensaje._doc}))
+        }
+        let mensajesConIdN = normalize(mensajesConId, schemaMensajes)
+        console.log('mensaje con id ' + JSON.stringify(mensajesConIdN,null,3))
+        return mensajesConIdN;
+    }
+    catch {
+        return []
+    }
+}
 io.on('connection', async socket => {
-    socket.emit('messages',  await ApiMensajes.findAll());
+    //socket.emit('messages',  await ApiMensajes.findAll());
     /*socket.on('update', data => {
         io.sockets.emit('productos', productos.enlistar());
     });*/
     socket.on('new-message', async function (data) {
         const resultado = await ApiMensajes.create(data);
-        console.log('nuevo mensaje ' + JSON.stringify(resultado))
-        const schemaAuthor = new schema.Entity('author',{},{idAttribute: 'author.email'});
-        const schemaMensaje = new schema.Entity('post', {
-            author: schemaAuthor
-        },{idAttribute: '_id'})
-        const schemaMensajes = new schema.Entity('posts', {
-            mensajes: [schemaMensaje]
-          },{idAttribute: 'id'})
-        let denormalizedData = normalize(await ApiMensajes.findAll(), schemaMensajes);
-        console.log('normalizado' + JSON.stringify(denormalizedData))
-        //socket.emit('messages', denormalizedData);
+        console.log('normalizado' + JSON.stringify(getAll(),null,3))
+        socket.emit('messages', await getAll());
         /*let archivo = await fs.promises.readFile(rutaMensajes, "utf-8");
         let msg = JSON.parse(archivo,null,"\t")
         msg.push(data);
         //comentario de commit
         await fs.promises.writeFile(rutaMensajes, JSON.stringify(msg))
         io.sockets.emit('messages', await leerMensajes())*/
+        
     });
 });
 

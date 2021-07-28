@@ -1,5 +1,6 @@
 const socket = io.connect();
-
+const denormalize= normalizr.denormalize;
+const schema= normalizr.schema;
 
 socket.on('productos', function (productos) {
     console.log('productos socket client')
@@ -7,7 +8,13 @@ socket.on('productos', function (productos) {
 });
 
 const form = document.getElementById('form-productos');
-
+const schemaAuthor = new schema.Entity('author',{},{idAttribute: 'email'});
+const schemaMensaje = new schema.Entity('post', {
+    author: schemaAuthor
+},{idAttribute: '_id'})
+const schemaMensajes = new schema.Entity('posts', {
+    mensajes: [schemaMensaje]
+  },{idAttribute: 'id'})
 form.addEventListener('submit', event => {
     event.preventDefault();
 
@@ -81,7 +88,8 @@ function render(data){
 }
 
 socket.on("messages",  async (data) => {
-  console.log("todos los datos de los mensajes" +JSON.stringify(data));
+    let denormalizedData = denormalize(data.result, schemaMensajes, data.entities);
+    console.log(JSON.stringify(denormalizedData,null,3))
   // await render(data)
 })
 
